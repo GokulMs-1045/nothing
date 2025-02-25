@@ -8,7 +8,7 @@ const orderProduct = async (req, res) => {
         res.status(201).json({ message: "Order placed successfully", order: newOrder });
     } catch (err) {
         res.status(400).json({ error: err.message });
-    }
-};
+    } 
+}; 
 
 module.exports = orderProduct;
