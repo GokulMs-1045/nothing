@@ -20,7 +20,7 @@ require("./config/db");
 const signupRoutes = require("./routes/signupRoutes");
 const loginRoutes = require("./routes/loginRoutes");
 // const resetPasswordRoutes = require("./routes/resetPasswordRoutes");
-// const orderProductRoutes = require("./routes/orderProductRoutes");
+const orderProductRoutes = require("./routes/orderProductRoutes");
 // const myStoreRoutes = require("./routes/myStoreRoutes");
 
 //ENVIRONMENT VARIABLEs
@@ -29,7 +29,7 @@ const PORT = process.env.PORT;
 app.use('/', signupRoutes);
 app.use('/login', loginRoutes);
 // app.use('/resetpassword', resetPasswordRoutes);
-// app.use('/order',orderProductRoutes);
+app.use('/',orderProductRoutes);
 // app.use('/mystore',myStoreRoutes);
 
 // **Start Server**
