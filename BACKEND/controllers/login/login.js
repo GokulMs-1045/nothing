@@ -1,7 +1,7 @@
 require('dotenv').config(); // Load environment variables
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const User = require("../../models/signup.model");
+const User = require("../../models/User/signup.model");
 const jwt = require('jsonwebtoken');
 
 const loginUser = async (req, res) => {
