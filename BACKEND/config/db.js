@@ -1,26 +1,26 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-const DB_URL = process.env.DB_URL;  // Load DB URL from .env
+const MONGO_URI = process.env.MONGO_URI;  // Load DB URL from .env
 
 // Create separate connections for different databases
 const UserDetails = mongoose.createConnection(
-    `${DB_URL}/UserDetails`,
+    `${MONGO_URI}/UserDetails`,
     { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
 const Customer = mongoose.createConnection(
-    `${DB_URL}/Customer`,
+    `${MONGO_URI}/Customer`,
     { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
 const Dealer = mongoose.createConnection(
-    `${DB_URL}/Dealer`,
+    `${MONGO_URI}/Dealer`,
     { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
 const Kaipulla = mongoose.createConnection(
-    `${DB_URL}/Kaipulla`,
+    `${MONGO_URI}/Kaipulla`,
     { useNewUrlParser: true, useUnifiedTopology: true }
 );
 

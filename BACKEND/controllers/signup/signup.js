@@ -1,69 +1,40 @@
-const User = require("../../models/User/signup.model.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const SECRET_KEY = process.env.SECRET_KEY;
-
+const User = require("../../models/User");
 
 const signupUser = async (req, res) => {
     try {
-        const { name, phone, email, password, dob, state, city, address, userType, dealerDetails } = req.body;
+        const { name, email, password} = req.body;
 
-        console.log("Received data:", req.body);
-
-        if (!userType) {
-            return res.status(400).json({ message: "User type is required" });
-        }
-
-        // Check for duplicate email or phone
-        const existingUser = await User.findOne({ $or: [{ email }, { phone }] });
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ message: "Email or phone number already exists" });
+            return res.status(400).json({ message: "Email already registered" });
         }
 
-        // Validate Password
-        if (password.length < 8) {
-            return res.status(400).json({ message: "Password must be at least 8 characters long" });
-        }
-
-        let validatedDealerDetails = null;
-        if (userType === "dealer") {
-            const { companyName, category, businessAddress } = dealerDetails || {};
-
-            if (!companyName || !category || !businessAddress) {
-                return res.status(400).json({
-                    message: "Missing dealer details. Please provide company name, category, and business address.",
-                });
-            }
-
-            validatedDealerDetails = { companyName, category, businessAddress };
-        }
-
+        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Create new user
         const newUser = new User({
             name,
-            email: email.toLowerCase(),
-            password: hashedPassword,
-            dob,
-            phone,
-            state,
-            city,
-            address,
-            userType,
-            dealerDetails: userType === "dealer" ? validatedDealerDetails : null,
+            email,
+            password: hashedPassword
         });
 
         await newUser.save();
 
         // Generate JWT Token
-        const token = jwt.sign({ userId: newUser._id, userType: newUser.userType }, SECRET_KEY, {
-            expiresIn: "7d",
-        });
+        const token = jwt.sign(
+            { userId: newUser._id, email: newUser.email},
+            process.env.JWT_SECRET,
+            { expiresIn: "2h" }
+        );
 
-        res.json({ message: "User registered successfully"});
+        res.status(201).json({ message: "User registered successfully", token });
+
     } catch (error) {
-        console.error("❌ Server Error:", error);
-        res.status(500).json({ message: "Server error", error });
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 };
 

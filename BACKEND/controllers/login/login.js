@@ -1,49 +1,44 @@
-require('dotenv').config(); // Load environment variables
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const User = require("../../models/User/signup.model");
-const jwt = require('jsonwebtoken');
+require("dotenv").config();
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const bodyParser = require("body-parser");
 
-const loginUser = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        console.log("Login attempt:", email);
+const app = express();
+app.use(bodyParser.json());
 
-        // Find user by email (case insensitive)
-        const user = await User.findOne({ email: email.toLowerCase() });
-        if (!user) {
-            return res.status(401).json({ message: "Invalid email or password" });
-        }
+const users = []; // Simulated user database
 
-        console.log("✅ User found:", user.email);
+// Secret Key for JWT
+const JWT_SECRET = process.env.JWT_SECRET;
 
-        // Compare passwords
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ message: "Invalid email or password" });
-        }
+// OAuth 2.0 Login - Generates JWT Token
+app.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+    const user = users.find(u => u.username === username);
 
-        // Generate JWT token
-        const token = jwt.sign(
-            { userId: user._id, email: user.email, userType: user.userType },
-            process.env.SECRET_KEY, // Use environment variable
-            { expiresIn: "1h" }
-        );
-
-        // Set token in HttpOnly cookie
-        res.cookie("token", token, {
-            httpOnly: true, // Secure access
-            secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-            sameSite: "Strict",
-            maxAge: 3600000, // 1 hour
-        });
-
-        console.log("✅ Login successful");
-        res.json({ message: "Login successful", token, userType: user.userType });
-    } catch (error) {
-        console.error("❌ Server Error:", error);
-        res.status(500).json({ message: "Server error", error });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+        return res.status(401).json({ message: "Invalid credentials" });
     }
-};
 
-module.exports = loginUser;
+    // Generate JWT Token (OAuth 2.0 Access Token)
+    const accessToken = jwt.sign({ username: user.username }, JWT_SECRET, { expiresIn: "1h" });
+
+    res.json({ accessToken });
+});
+
+// Register User
+
+
+// Protected Route (Requires JWT Token)
+app.get("/protected", authenticateToken, (req, res) => {
+    res.json({ message: "Protected data accessed", user: req.user });
+});
+
+// Middleware to Verify JWT Token
+
+
+// Start Server
+app.listen(5000, () => {
+    console.log("Server running on port 5000");
+});
