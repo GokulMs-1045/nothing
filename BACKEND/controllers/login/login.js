@@ -1,49 +1,45 @@
-require('dotenv').config(); // Load environment variables
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const User = require("../../models/User/signup.model");
-const jwt = require('jsonwebtoken');
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const login = require('../../models/User/');
 
-const loginUser = async (req, res) => {
+passport.use(
+    new GoogleStrategy(
+        {
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: "/auth/google/callback",
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                let user = await User.findOne({ googleId: profile.id });
+
+                if (!user) {
+                    user = new User({
+                        googleId: profile.id,
+                        name: profile.displayName,
+                        email: profile.emails[0].value,
+                        avatar: profile.photos[0].value,
+                    });
+                    await user.save();
+                }
+
+                return done(null, user);
+            } catch (error) {
+                return done(error, null);
+            }
+        }
+    )
+);
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
     try {
-        const { email, password } = req.body;
-        console.log("Login attempt:", email);
-
-        // Find user by email (case insensitive)
-        const user = await User.findOne({ email: email.toLowerCase() });
-        if (!user) {
-            return res.status(401).json({ message: "Invalid email or password" });
-        }
-
-        console.log("✅ User found:", user.email);
-
-        // Compare passwords
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ message: "Invalid email or password" });
-        }
-
-        // Generate JWT token
-        const token = jwt.sign(
-            { userId: user._id, email: user.email, userType: user.userType },
-            process.env.SECRET_KEY, // Use environment variable
-            { expiresIn: "1h" }
-        );
-
-        // Set token in HttpOnly cookie
-        res.cookie("token", token, {
-            httpOnly: true, // Secure access
-            secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-            sameSite: "Strict",
-            maxAge: 3600000, // 1 hour
-        });
-
-        console.log("✅ Login successful");
-        res.json({ message: "Login successful", token, userType: user.userType });
+        const user = await User.findById(id);
+        done(null, user);
     } catch (error) {
-        console.error("❌ Server Error:", error);
-        res.status(500).json({ message: "Server error", error });
+        done(error, null);
     }
-};
-
-module.exports = loginUser;
+});

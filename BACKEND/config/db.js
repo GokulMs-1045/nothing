@@ -1,28 +1,20 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-const DB_URL = process.env.DB_URL;  // Load DB URL from .env
+const MONGO_URI = process.env.MONGO_URI;
 
-// Create separate connections for different databases
-const UserDetails = mongoose.createConnection(
-    `${DB_URL}/UserDetails`,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-);
 
-const Customer = mongoose.createConnection(
-    `${DB_URL}/Customer`,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-);
 
-const Dealer = mongoose.createConnection(
-    `${DB_URL}/Dealer`,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-);
+// Function to create connection with error handling
+const createConnection = (dbName) => {
+    return mongoose.createConnection(MONGO_URI, { dbName })
+        .on("error", (err) => console.error(`MongoDB Error in ${dbName}:`, err))
+        .on("open", () => console.log(`Connected to ${dbName} database`));
+};
 
-const Kaipulla = mongoose.createConnection(
-    `${DB_URL}/Kaipulla`,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-);
+const UserDetails = createConnection("UserDetails");
+const Customer = createConnection("Customer");
+const Dealer = createConnection("Dealer");
+const Kaipulla = createConnection("Kaipulla");
 
-// Export connections instead of mongoose
 module.exports = { UserDetails, Customer, Dealer, Kaipulla };
