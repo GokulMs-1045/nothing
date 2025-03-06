@@ -12,7 +12,7 @@ const createConnection = (dbName) => {
         .on("open", () => console.log(`Connected to ${dbName} database`));
 };
 
-const UserDetails = createConnection("UserDetails");
+const UserDetails = createConnection("UserDetails"); 
 const Customer = createConnection("Customer");
 const Dealer = createConnection("Dealer");
 const Kaipulla = createConnection("Kaipulla");
