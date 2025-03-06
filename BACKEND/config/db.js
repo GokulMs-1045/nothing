@@ -4,7 +4,6 @@ require('dotenv').config();
 const MONGO_URI = process.env.MONGO_URI;
 
 
-
 // Function to create connection with error handling
 const createConnection = (dbName) => {
     return mongoose.createConnection(MONGO_URI, { dbName })
@@ -16,5 +15,7 @@ const UserDetails = createConnection("UserDetails");
 const Customer = createConnection("Customer");
 const Dealer = createConnection("Dealer");
 const Kaipulla = createConnection("Kaipulla");
+
+const MONGO_URI = process.env.MONGO_URI;  // Load DB URL from .env
 
 module.exports = { UserDetails, Customer, Dealer, Kaipulla };
