@@ -1,7 +1,8 @@
-const express = require('express');
-const loginUser  = require('../controllers/login/login');
+import express from "express";
+import loginUser from "../controllers/login/login.js";
+
 const router = express.Router();
 
-router.post('/login', loginUser);   
+router.post("/google/callback", loginUser);
 
-module.exports = router;
+export default router;

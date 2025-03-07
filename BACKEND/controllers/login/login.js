@@ -1,91 +1,92 @@
+import express from "express";
+import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
+import login from "../../models/User/login.model.js"; // ✅ Correct model reference
+import dotenv from "dotenv";
 
-const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const login = require('../../models/User/');
+dotenv.config();
 
-passport.use(
-    new GoogleStrategy(
-        {
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "/auth/google/callback",
-        },
-        async (accessToken, refreshToken, profile, done) => {
-            try {
-                let user = await User.findOne({ googleId: profile.id });
+const router = express.Router();
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-                if (!user) {
-                    user = new User({
-                        googleId: profile.id,
-                        name: profile.displayName,
-                        email: profile.emails[0].value,
-                        avatar: profile.photos[0].value,
-                    });
-                    await user.save();
-                }
+// POST: /login/google/callback - Handle Google OAuth Callback
+const auth = async (req, res) => {
+  // try {
+  //     const { token } = req.body; // Get Google token from client
 
-                return done(null, user);
-            } catch (error) {
-                return done(error, null);
-            }
-        }
-    )
-);
+  //     // Verify Google token
+  //     const ticket = await client.verifyIdToken({
+  //     idToken: token,
+  //     audience: process.env.GOOGLE_CLIENT_ID,
+  //     });
 
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
+  //     const payload = ticket.getPayload();
 
-passport.deserializeUser(async (id, done) => {
-    try {
-        const user = await User.findById(id);
-        done(null, user);
-    } catch (error) {
-        done(error, null);
+  //     let User = await login.findOne({ email: payload.email }); // Check if user exists
+
+  //     if (!User) {
+  //       // If user doesn't exist, create a new user
+  //     User = new login({
+  //         googleId: payload.sub,
+  //         name: payload.name,
+  //         email: payload.email,
+  //         email_verified: payload.email_verified,
+  //         picture: payload.picture,
+  //         given_name: payload.given_name,
+  //         accessToken: token, // Save token for later use if necessary
+  //     });
+
+  //       await User.save(); // Save new user to DB
+  //     }
+
+  //     // Generate JWT Token for authentication
+  //     const jwtToken = jwt.sign({ id: User._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+  //     res.json({ token: jwtToken, User }); // Send JWT and user data to client
+  // } catch (error) {
+  //     console.error("Google OAuth Error:", error);
+  //     res.status(500).json({ message: "OAuth authentication failed" });
+  // }
+  try {
+    const { token } = req.body;
+
+    // Verify Google Token
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    let user = await login.findOne({ email: payload.email });
+
+    if (user) {
+      console.log("Existing user found:", user.email);
+      // If the user exists but was created manually, update with Google ID
+      if (!user.googleId) {
+        user.googleId = payload.sub; // Link Google ID to existing account
+        await user.save();
+      }
+    } else {
+      // Create new user if not found
+      user = new login({
+        googleId: payload.sub,
+        name: payload.name,
+        email: payload.email,
+        picture: payload.picture,
+      });
+      await user.save();
     }
-    
-=======
-require("dotenv").config();
-const express = require("express");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const bodyParser = require("body-parser");
 
-const app = express();
-app.use(bodyParser.json());
+    // Generate JWT Token for authentication
+    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
-const users = []; // Simulated user database
+    res.json({ token: jwtToken, user });
+  } catch (error) {
+    console.error("Google OAuth Error:", error);
+    res.status(500).json({ message: "OAuth authentication failed" });
+  }
+};
 
-// Secret Key for JWT
-const JWT_SECRET = process.env.JWT_SECRET;
-
-// OAuth 2.0 Login - Generates JWT Token
-app.post("/login", async (req, res) => {
-    const { username, password } = req.body;
-    const user = users.find(u => u.username === username);
-
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    // Generate JWT Token (OAuth 2.0 Access Token)
-    const accessToken = jwt.sign({ username: user.username }, JWT_SECRET, { expiresIn: "1h" });
-
-    res.json({ accessToken });
-});
-
-// Register User
-
-
-// Protected Route (Requires JWT Token)
-app.get("/protected", authenticateToken, (req, res) => {
-    res.json({ message: "Protected data accessed", user: req.user });
-});
-
-// Middleware to Verify JWT Token
-
-
-// Start Server
-app.listen(5000, () => {
-    console.log("Server running on port 5000");
-});
+export default auth;
