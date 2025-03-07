@@ -37,7 +37,7 @@ const editStore = async (req, res) => {
 
         console.log("Updating store:", oldName);
 
-        const updatedStore = await myStore.findOneAndUpdate(
+        const updatedStore = await myStore.findOneAndUpdate( 
             { name: oldName }, // Find by old name
             { name, category, phoneNumber, address }, // Update all fields, including name
             { new: true } // Return the updated document

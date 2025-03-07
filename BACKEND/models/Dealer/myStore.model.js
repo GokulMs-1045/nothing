@@ -8,4 +8,4 @@ const StoreSchema = new mongoose.Schema({
   address: { street: String, city: String, state: String },
 });
 const StoreDetails = Dealer.model("StoreDetails", StoreSchema, "StoreDetails"); // Use Dealer DB
-module.exports = StoreDetails;
+module.exports = StoreDetails; 
