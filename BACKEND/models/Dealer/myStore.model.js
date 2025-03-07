@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { Dealer } = require('../../config/db'); // Ensure correct path
 
 const StoreSchema = new mongoose.Schema({
+  googleid: String,
   name: String,
   category: String,
   phoneNumber: [{ countryCode: String, number: String }],

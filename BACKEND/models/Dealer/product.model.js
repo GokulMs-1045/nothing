@@ -1,18 +1,13 @@
+const mongoose = require("mongoose");
+
 const productSchema = new mongoose.Schema({
-  storeEmail: { type: String, required: true }, // Store email to link with registration
-  products: [
-    {
-      name: String,
-      category: String,
-      price: Number,
-      description: String,
-      email: String,
-      instock : Number,
-      imageUrl: String,
-    },
-  ],
-});
+    name: { type: String, required: true },
+    //img
+    
+    description: { type: String },
+    price: { type: Number, required: true },
+    inStock: { type: Number, required: true },
+    store: { type: mongoose.Schema.Types.ObjectId, ref: "StoreDetails", required: true } // Link to store
+}, { timestamps: true });
 
-const Product = mongoose.model("Products", productSchema);
-
-module.exports=productSchema.model;
+module.exports = mongoose.model("Products", productSchema);
