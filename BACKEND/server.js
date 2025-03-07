@@ -18,14 +18,16 @@ app.use(
 require("./config/db");
 
 //ROUTES
-const signupRoutes = require("./routes/signupRoutes");
+// const signupRoutes = require("./routes/signupRoutes");
+const myStoreRoutes = require('./routes/myStoreRoutes');
 
 
 //ENVIRONMENT VARIABLEs
 const PORT = process.env.PORT;
 
 //API's
-app.use('/', signupRoutes);
+// app.use('/', signupRoutes);
+app.use('/',myStoreRoutes);
 
  
 // **Start Server**
