@@ -47,6 +47,6 @@ const auth = async (req, res) => {
       console.error("Google OAuth Error:", error);
       res.status(500).json({ message: "OAuth authentication failed" });
   }
-
+}
 
 export default auth;
