@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { UserDetails } from "../../config/db.js";
 
+
+
 const UserSchema = new mongoose.Schema(
   {
     googleId: { type: String, unique: true, sparse: true }, // Make sure sparse is added to allow non-Google users
