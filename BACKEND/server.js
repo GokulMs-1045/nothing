@@ -37,9 +37,6 @@ import loginRoutes  from './routes/loginRoutes.js';
 app.use('/',myStoreRoutes);
 app.use("/login", loginRoutes);
 
-
-console.log(`Google Client ID: ${process.env.GOOGLE_CLIENT_ID}`);
-
 // ✅ Start Server
 app.listen(PORT, () => {
   console.log( `🚀 Server running on http://localhost:${PORT}`);
