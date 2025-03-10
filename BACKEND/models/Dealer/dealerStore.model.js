@@ -6,7 +6,7 @@ const dealerSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   category: { type: String },
   location: { type: String },
-  phone: { type: String },
+  phone: { type: String }
 });
 const Dealer = (conn) => conn.model('Dealer', dealerSchema, 'Dealers');
 
