@@ -5,6 +5,7 @@ const productSchema = new mongoose.Schema({
   description: { type: String, required: true },
   instock: { type: Number, required: true, min: 0 },
   price: { type: Number, required: true, min: 0 },
+  returnPolicy:{type:String,required:true,min:1},
   googleId: { type: String, required: true } // Links to the dealer's googleId
 });
 

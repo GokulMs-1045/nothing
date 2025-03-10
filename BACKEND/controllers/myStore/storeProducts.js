@@ -29,17 +29,17 @@ const initializeModels = async () => {
 export const addProduct = async (req, res) => {
   try {
     const { googleId } = req.params;
-    const { name, description, instock, price } = req.body;
+    const { name, description, instock, price,returnPolicy } = req.body;
 
     console.log('Received request to add product for googleId:', googleId);
     console.log('Request headers:', req.headers);
-    console.log('Product data from body:', { name, description, instock, price });
+    console.log('Product data from body:', { name, description, instock, price,returnPolicy });
 
     if (!googleId) {
       console.log('Google ID is missing from route');
       return res.status(400).json({ error: 'Google ID is required in the route' });
     }
-    if (!name || !description || instock === undefined || price === undefined) {
+    if (!name || !description || instock === undefined || price === undefined||!returnPolicy) {
       console.log('Missing required product fields');
       return res.status(400).json({ error: 'All fields (name, description, instock, price) are required in the body' });
     }
@@ -68,7 +68,8 @@ export const addProduct = async (req, res) => {
       name,
       description,
       instock,
-      price
+      price,
+      returnPolicy
     };
 
     console.log('Saving new product to Dealer database:', newProduct);
