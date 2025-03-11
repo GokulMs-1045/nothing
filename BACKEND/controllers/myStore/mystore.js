@@ -1,121 +1,52 @@
-import Dealer from '../../models/Dealer/dealerStore.model.js';
-import { UserDetails } from '../../config/db.js';
+import StoreDetails from "../../models/Dealer/dealerStore.model.js"; // Ensure correct path
 
-let DealerModel;
-
-const initializeModels = async () => {
-  try {
-    const userDetailsConn = await UserDetails;
-    console.log('UserDetails connection readyState:', userDetailsConn.readyState);
-    DealerModel = Dealer(userDetailsConn);
-    console.log('DealerModel initialized:', !!DealerModel);
-  } catch (error) {
-    console.error('Error initializing models:', error.message);
-    throw error;
-  }
-};
 export const getDealerByGoogleId = async (req, res) => {
   try {
     const { googleId } = req.params;
 
-    console.log('Received request for googleId:', googleId);
-    console.log('Request headers:', req.headers);
-
     if (!googleId) {
-      console.log('Google ID is missing');
-      return res.status(400).json({ error: 'Google ID is required' });
+      return res.status(400).json({ error: "Google ID is required" });
     }
 
     const trimmedGoogleId = googleId.trim();
-    console.log('Trimmed googleId:', trimmedGoogleId);
 
-    if (!DealerModel) {
-      console.log('Initializing models...');
-      await initializeModels();
-    }
-
-    console.log('Querying DealerModel with googleId:', trimmedGoogleId);
-    const dealer = await DealerModel.findOne({
-      googleId: { $regex: new RegExp(`^${trimmedGoogleId}$`, 'i') }
+    // Search in storeDetails collection instead of dealers
+    const store = await StoreDetails.findOne({
+      googleId: { $regex: new RegExp(`^${trimmedGoogleId}$`, "i") }
     }).lean();
-    console.log('Dealer query result:', dealer);
 
-    if (!dealer) {
-      console.log('Dealer not found for googleId:', trimmedGoogleId);
-      return res.status(404).json({ error: 'Dealer not found' });
+    if (!store) {
+      return res.status(404).json({ error: "Store not found for this Google ID" });
     }
 
-    console.log('Sending dealer response:', dealer);
-    res.status(200).json(dealer);
+    res.status(200).json(store);
   } catch (error) {
-    console.error('❌ Error fetching dealer:', error.message);
-    if (error.name === 'MongooseError' || error.name === 'MongoNetworkError') {
-      return res.status(503).json({
-        error: 'Database connection issue',
-        details: error.message,
-      });
-    }
-    res.status(500).json({
-      error: 'Internal server error',
-      details: error.message,
-    });
+    console.error("❌ Error fetching store details:", error.message);
+    res.status(500).json({ error: "Internal server error", details: error.message });
   }
 };
 
-export const updateDealerByGoogleId = async (req, res) => {
+export const updateStoreDetails = async (req, res) => {
   try {
-    const { googleId } = req.params;
-    const updateData = req.body;
-
-    console.log('Received update request for googleId:', googleId);
-    console.log('Request headers:', req.headers);
-    console.log('Update data:', updateData);
+    const { googleId } = req.params; // Get store by Google ID
+    const updateData = req.body; // Data to update
 
     if (!googleId) {
-      console.log('Google ID is missing');
-      return res.status(400).json({ error: 'Google ID is required' });
+      return res.status(400).json({ message: "Google ID is required" });
     }
 
-    if (!updateData || Object.keys(updateData).length === 0) {
-      console.log('No update data provided');
-      return res.status(400).json({ error: 'Update data is required' });
-    }
-
-    const trimmedGoogleId = googleId.trim();
-    console.log('Trimmed googleId:', trimmedGoogleId);
-
-    if (!DealerModel) {
-      console.log('Initializing models...');
-      await initializeModels();
-    }
-
-    console.log('Updating DealerModel with googleId:', trimmedGoogleId);
-    const updatedDealer = await DealerModel.findOneAndUpdate(
-      { googleId: { $regex: new RegExp(`^${trimmedGoogleId}$`, 'i') } },
-      { $set: updateData },
-      { new: true, runValidators: true, lean: true } // Return the updated document
+    const updatedStore = await StoreDetails.findOneAndUpdate(
+      { googleId }, // Find store by Google ID
+      { $set: updateData }, // Update with new data
+      { new: true, runValidators: true } // Return updated doc
     );
-    console.log('Update query result:', updatedDealer);
-    console.log('Raw update executed on collection:', DealerModel.collection.collectionName);
 
-    if (!updatedDealer) {
-      console.log('Dealer not found for update with googleId:', trimmedGoogleId);
-      return res.status(404).json({ error: 'Dealer not found' });
+    if (!updatedStore) {
+      return res.status(404).json({ message: "Store not found" });
     }
 
-    console.log('Sending updated dealer response:', updatedDealer);
-    res.status(200).json(updatedDealer);
+    res.status(200).json({ message: "Store details updated successfully", updatedStore });
   } catch (error) {
-    console.error('❌ Error updating dealer:', error.message);
-    if (error.name === 'MongooseError' || error.name === 'MongoNetworkError') {
-      return res.status(503).json({
-        error: 'Database connection issue',
-        details: error.message,
-      });
-    }
-    res.status(500).json({
-      error: 'Internal server error',
-      details: error.message,
-    });
+    res.status(500).json({ message: "Error updating store details", error: error.message });
   }
 };
