@@ -30,12 +30,14 @@ app.use((req, res, next) => {
 
 //ROUTES
 import myStoreRoutes from './routes/myStoreRoutes.js';
+import personalinfoRoutes from "./routes/personalinfoRoutes.js";
 
 import loginRoutes  from './routes/loginRoutes.js';
 
 //API's
 app.use('/',myStoreRoutes);
 app.use("/login", loginRoutes);
+app.use("/", personalinfoRoutes);
 
 // ✅ Start Server
 app.listen(PORT, () => {

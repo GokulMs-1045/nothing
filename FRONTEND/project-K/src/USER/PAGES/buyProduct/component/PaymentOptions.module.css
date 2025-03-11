@@ -1,0 +1,178 @@
+/* Main container */
+.maincontainer {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 20px;
+}
+
+/* Delivery and payment mode section */
+.modecontainer {
+  flex: 1;
+  min-width: 300px;
+  max-width: 40%;
+  margin: auto;
+}
+
+/* Address section */
+.addresscontainer {
+  flex: 1;
+  min-width: 300px;
+  max-width: 55%;
+  margin: auto;
+}
+
+/* Dropdown styling */
+.dropdown1,
+.dropdown2 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+label {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+select {
+  width: 100%;
+  max-width: 300px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Image container */
+.imageContainer {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.imageContainer img {
+  width: 200px;
+  height: 200px;
+  transition: filter 0.5s ease-in-out;
+}
+
+.blurred img {
+  filter: blur(6px);
+}
+
+/* Upload image section */
+.upload-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.upload-container input {
+  font-size: 16px;
+}
+
+/* Address section */
+.addresssec {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Form fields */
+.label,
+.label1,
+.addresslabel {
+  font-size: 16px;
+  font-weight: 500;
+  display: block;
+  margin-top: 15px;
+  text-align: left;
+}
+
+.input,
+.input1,
+.addressinput {
+  width: 100%;
+  max-width: 500px;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.addressinput {
+  height: 100px;
+  resize: none;
+}
+
+/* ZIP, City, State row */
+.ziprow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.input1 {
+  max-width: 150px;
+}
+
+/* Button styling */
+button {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  margin: 20px auto;
+  color: white;
+  background-color: black;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .maincontainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modecontainer,
+  .addresscontainer {
+    max-width: 100%;
+  }
+
+  .imageContainer img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .input,
+  .input1,
+  .addressinput {
+    max-width: 100%;
+  }
+}
