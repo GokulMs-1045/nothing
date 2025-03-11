@@ -1,58 +1,52 @@
-const myStore = require("../../models/Dealer/myStore.model");
+import StoreDetails from "../../models/Dealer/dealerStore.model.js"; // Ensure correct path
 
-// ✅ GET Store Details
-const getStore = async (req, res) => {
-    try {
-        const { googleid } = req.params; // Use req.query instead of req.params
+export const getDealerByGoogleId = async (req, res) => {
+  try {
+    const { googleId } = req.params;
 
-        if (!googleid) {
-            return res.status(400).json({ message: "Store name is required" });
-        }
-
-        const StoreDetails = await myStore.findOne({ googleid });
-
-        if (!StoreDetails) {
-            return res.status(404).json({ message: "Store details not found" });
-        }
-
-        res.status(200).json(StoreDetails);
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching store details", error: error.message });
+    if (!googleId) {
+      return res.status(400).json({ error: "Google ID is required" });
     }
+
+    const trimmedGoogleId = googleId.trim();
+
+    // Search in storeDetails collection instead of dealers
+    const store = await StoreDetails.findOne({
+      googleId: { $regex: new RegExp(`^${trimmedGoogleId}$`, "i") }
+    }).lean();
+
+    if (!store) {
+      return res.status(404).json({ error: "Store not found for this Google ID" });
+    }
+
+    res.status(200).json(store);
+  } catch (error) {
+    console.error("❌ Error fetching store details:", error.message);
+    res.status(500).json({ error: "Internal server error", details: error.message });
+  }
 };
 
-// ✅ UPDATE Store Details
-const editStore = async (req, res) => {
-    try {
-        const { googleid } = req.params; // Get store name from URL
-        const { name, category, phoneNumber, address } = req.body; // Get new details from request body
+export const updateStoreDetails = async (req, res) => {
+  try {
+    const { googleId } = req.params; // Get store by Google ID
+    const updateData = req.body; // Data to update
 
-        if (!googleid) {
-            return res.status(400).json({ message: "Invalid URL" });
-        }
-
-        if (!name || !category || !phoneNumber || !address) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
-
-        console.log("Updating store:", googleid);
-
-        const updatedStore = await myStore.findOneAndUpdate( 
-            { googleid : googleid }, // Find by google id : googleid route
-            { name, category, phoneNumber, address }, // Update all fields, including name
-            { new: true } // Return the updated document
-        );
-
-        if (!updatedStore) {
-            return res.status(404).json({ message: `Store '${googleid}' not found` });
-        }
-
-        res.status(200).json({ message: "Store details updated successfully", updatedStore });
-    } catch (error) {
-        res.status(500).json({ message: "Error updating store details", error: error.message });
+    if (!googleId) {
+      return res.status(400).json({ message: "Google ID is required" });
     }
+
+    const updatedStore = await StoreDetails.findOneAndUpdate(
+      { googleId }, // Find store by Google ID
+      { $set: updateData }, // Update with new data
+      { new: true, runValidators: true } // Return updated doc
+    );
+
+    if (!updatedStore) {
+      return res.status(404).json({ message: "Store not found" });
+    }
+
+    res.status(200).json({ message: "Store details updated successfully", updatedStore });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating store details", error: error.message });
+  }
 };
-
-
-
-module.exports = { getStore, editStore };

@@ -1,8 +1,9 @@
 const express = require('express');
-const  orderProduct  = require('../controllers/orderProduct/orderProduct');
+const { createOrderbyId } = require('../controllers/order/order.js');
 
 const router = express.Router();
 
-router.post('/order', orderProduct);
+// Single route for creating an order
+router.post('/:googleId/:productName/order', createOrderbyId);
 
 module.exports = router;

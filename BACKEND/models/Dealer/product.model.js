@@ -1,13 +1,14 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+import { Dealer } from '../../config/db.js';
 
 const productSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    //img
-    
-    description: { type: String },
-    price: { type: Number, required: true },
-    inStock: { type: Number, required: true },
-    store: { type: mongoose.Schema.Types.ObjectId, ref: "StoreDetails", required: true } // Link to store
-}, { timestamps: true });
+  productName: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  returnPolicy: { type: String, required: true },
+  googleId: { type: String, required: true }, // Reference to the dealer's googleId
+  instock: { type: Number, required: true }, // Optional field
+});
 
-module.exports = mongoose.model("Products", productSchema);
+const Product = Dealer.model('Products', productSchema);
+export default Product;
