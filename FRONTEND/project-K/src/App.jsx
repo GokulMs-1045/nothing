@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import "./App.css";
 import Login from "./COMMON/LOGIN/Login.jsx";
+import PersonalInfo from "./COMMON/PerInfo/PerInfo.jsx";
+import BuyProduct from "./USER/PAGES/buyProduct/BuyProduct.jsx";
 
 
 const products = [
@@ -85,7 +87,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        
+        <Route path = "/per-info" element = {<PersonalInfo/>}/>
+        <Route path="/buy" element={<BuyProduct/>}/>
       </Routes>
     </BrowserRouter>
   );

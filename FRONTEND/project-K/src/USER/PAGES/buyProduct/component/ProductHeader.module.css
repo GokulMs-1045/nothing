@@ -1,0 +1,85 @@
+.BlankBar {
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  border-radius: 5px;
+  background-color: #c7c7c7;
+  color: #c7c7c7;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+.mainContent {
+  display: flex;
+  justify-content: space-between;
+  margin: 28px 0;
+}
+
+.requestButton {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  background-color: #616161;
+  color: #010101;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 50px;
+}
+
+.requestIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.actionIcons {
+  display: flex;
+  gap: 80px;
+  margin-right: 50px;
+}
+
+.actionIcon {
+  width: 40px;
+  height: 40px;
+}
+@media (max-width: 991px) {
+  .mainContent {
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+  }
+
+  .requestButton {
+    margin-left: 0; /* Center it in a column layout */
+  }
+
+  .actionIcons {
+    gap: 50px;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  /* Request button at the top */
+  .requestButton {
+    order: -1; /* Moves it to the top */
+    margin-bottom: 15px; /* Adds spacing below */
+  }
+
+  /* Icons move to bottom */
+  .actionIcons {
+    order: 1; /* Moves it to the bottom */
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 15px; /* Adds spacing above */
+  }
+}
