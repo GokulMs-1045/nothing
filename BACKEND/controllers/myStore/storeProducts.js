@@ -7,13 +7,13 @@ import Product from '../../models/Dealer/product.model.js'; // Import the Produc
 export const addProduct = async (req, res) => {
   try {
     const { googleId } = req.params; // Get googleId from the route parameters
-    const { productName, description, price, returnPolicy, instock } = req.body; // Get product details from the request body
+    const { productName, description, price, returnPolicy, instock, category} = req.body; // Get product details from the request body
 
     // Validate required fields
     if (!googleId) {
       return res.status(400).json({ error: 'Google ID is required in the route' });
-    }
-    if (!productName || !description || !price || !returnPolicy || instock === undefined) {
+    } 
+    if (!productName || !description || !price || !returnPolicy || !category|| instock === undefined) {
       return res.status(400).json({ error: 'All fields (productName, description, price, returnPolicy, instock) are required' });
     }
 
@@ -32,6 +32,7 @@ export const addProduct = async (req, res) => {
       description,
       price,
       returnPolicy,
+      category,
       instock,
       googleId: trimmedGoogleId, // Link the product to the dealer's googleId
     };
@@ -64,9 +65,6 @@ export const addProduct = async (req, res) => {
     });
   }
 };
-
-
-
 //get product
 
 export const getProductsByGoogleId = async (req, res) => {
@@ -104,7 +102,7 @@ export const getProductsByGoogleId = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { googleId, productName } = req.params; // Get googleId and productName from route
-    const { description, price, returnPolicy, instock } = req.body; // Updated fields
+    const { description, price, returnPolicy, instock,category } = req.body; // Updated fields
 
     // Validate required fields
     if (!googleId || !productName) {
@@ -124,7 +122,7 @@ export const updateProduct = async (req, res) => {
     // Find and update the product in the Products collection
     const updatedProduct = await Product.findOneAndUpdate(
       { googleId: trimmedGoogleId, productName: trimmedProductName }, // Find by googleId & productName
-      { description, price, returnPolicy, instock }, // Fields to update
+      { description, price, returnPolicy, instock ,category}, // Fields to update
       { new: true } // Return updated document
     );
 
