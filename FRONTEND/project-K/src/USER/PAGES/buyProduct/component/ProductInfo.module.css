@@ -1,0 +1,470 @@
+.productInfoContainer {
+  /* background-color: aqua; */
+  display: flex;
+  width: 100%;
+  gap: 100px;
+  margin-right: 50px;
+  margin-bottom: 30px;
+}
+
+.productImageSection {
+  width: 30%;
+}
+
+.productImage {
+  width: 250px;
+  height: 250px;
+  object-fit: contain; /* Ensure the whole image fits inside */
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out, border 0.3s ease-in-out;
+  border: 1.5px solid #007bff; /* Ensure border is visible */
+}
+.productImage:hover {
+  transform: scale(1.01); /* Slight zoom-out effect */
+}
+
+.productContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.thumbnailContainer {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent wrapping to the next line */
+  padding: 5px;
+  max-width: 100%; /* Prevent excessive width */
+  scroll-behavior: smooth;
+  position: relative;
+}
+
+/* Hide scrollbar (optional) */
+.thumbnailContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.thumbnailImage {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border 0.2s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.thumbnailImage:hover {
+  border: 1.5px solid #007bff;
+  transform: scale(1.05); /* Slight zoom-in effect on hover */
+}
+
+/* Navigation buttons for scrolling */
+.thumbnailNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 10;
+}
+
+.leftArrow {
+  left: 0;
+}
+
+.rightArrow {
+  right: 0;
+}
+.returnPolicy {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.returnIcon {
+  width: 20px;
+  height: 20px;
+  margin-left: 50px;
+}
+
+.productDetails {
+  width: 70%;
+}
+
+.productTitleSection {
+  /* background-color: aquamarine; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.productTitle {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Default style for the description */
+.productDescriptiondiv {
+  max-width: 900px;
+  max-height: 200px; /* Fixed height */
+  overflow: hidden; /* Prevents overflow by default */
+  position: relative;
+  font-size: 20px;
+}
+
+/* Make the description scrollable when content exceeds height */
+.productDescriptiondiv:hover {
+  overflow-y: auto;
+}
+
+/* Scrollbar Styling (optional) */
+.productDescriptiondiv::-webkit-scrollbar {
+  width: 5px;
+}
+
+.productDescriptiondiv::-webkit-scrollbar-thumb {
+  background: #b5b5b5;
+  border-radius: 10px;
+}
+
+.productDescriptiondiv::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quantityInput {
+  width: 80px;
+  height: 40px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.decreaseBtn{
+  margin-top: 10px;
+  background-color: #d5d5d5;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.increaseBtn {
+  margin-top: 10px;
+  background-color: #d5d5d5;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.decreaseBtn:hover, .increaseBtn:hover {
+  background-color: #9c9c9c;
+}
+
+.priceInfo,
+.quantityInfo {
+  display: flex;
+  flex-direction: column;
+}
+/* Default styles */
+.productMetaInfo {
+  display: flex;
+  flex-direction: row;
+  gap: 10px; /* Reduces space when description is small */
+  margin-top:40px; /* Adjusts spacing dynamically */
+}
+
+.priceInfo,
+.quantityInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.priceInfo {
+  margin-right: 400px;
+}
+
+.label {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.value {
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+/* --- 📱 Responsive Design for Tablets (max-width: 991px) --- */
+@media (max-width: 991px) {
+  .productMetaInfo {
+    flex-direction: column; /* Stack elements vertically */
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .priceInfo,
+  .quantityInfo {
+    width: 100%;
+  }
+
+  .quantityInfo {
+    align-items: flex-start;
+  }
+
+  .quantityControls {
+    display: flex;
+    gap: 10px;
+  }
+
+  .quantityInput {
+    width: 60px;
+    height: 35px;
+  }
+}
+
+/* --- 📱 Responsive Design for Mobile (max-width: 768px) --- */
+@media (max-width: 768px) {
+  .productMetaInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 20px;
+  }
+
+  .priceInfo,
+  .quantityInfo {
+    width: 100%;
+  }
+
+  .priceInfo {
+    margin-bottom: 10px;
+  }
+
+  .label {
+    font-size: 18px;
+  }
+
+  .value {
+    font-size: 18px;
+  }
+
+  .quantityInfo {
+    margin-top: 10px;
+  }
+
+  .quantityControls {
+    display: flex;
+    gap: 5px;
+  }
+
+  .quantityInput {
+    width: 50px;
+    height: 30px;
+  }
+
+  .decreaseBtn, .increaseBtn {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  /* Default style for the description */
+.productDescriptiondiv {
+  max-width: 900px;
+  height: 135px; /* Fixed height */
+  overflow: hidden; /* Prevents overflow by default */
+  position: relative;
+}
+
+/* Make the description scrollable when content exceeds height */
+.productDescriptiondiv:hover {
+  overflow-y: auto;
+}
+
+/* Scrollbar Styling (optional) */
+.productDescriptiondiv::-webkit-scrollbar {
+  width: 5px;
+}
+
+.productDescriptiondiv::-webkit-scrollbar-thumb {
+  background: #b5b5b5;
+  border-radius: 10px;
+}
+
+.productDescriptiondiv::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+}
+
+
+.quantityInput{
+  margin-top: 10px;
+  height: 20px;
+  padding: 3px;
+  border-radius: 4px;
+}
+
+
+
+
+
+@media (max-width: 768px) {
+
+  html, body {
+    overflow-x: hidden;
+  }
+
+  .productImageSection{
+    width: 80%;
+  }
+
+  .returnIcon{
+    width: 17px;
+    height: 17px;
+  }
+
+  .rettext{
+    font-size: 12px;
+  }
+
+  .productInfoContainer {
+    margin-top: 20px;
+    gap: 50px;
+    margin-right: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .productDescriptiondiv {
+    height: auto;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .productTitle{
+    font-size: 18px;
+    margin-left: 10px;
+  }
+
+  .productDescription{
+    font-size: 14px;
+    text-align: justify;
+  }
+
+  .productMetaInfo {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .priceInfo {
+    margin-bottom: 10px;
+  }
+
+  .label {
+    font-size: 18px;
+  }
+
+  .value {
+    font-size: 18px;
+  }
+
+  .quantityInfo {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .quantityControls {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .quantityInput {
+    width: 50px;
+    height: 30px;
+  }
+
+  .decreaseBtn, .increaseBtn {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  .thumbnailContainer {
+    max-width: 90%;
+    overflow-x: auto;
+  }
+
+  .thumbnailImage {
+    width: 40px;
+    height: 40px;
+  }
+
+}
+@media (max-width: 768px) {
+  .thumbnailContainer {
+    max-width: 90%;
+    overflow-x: auto;
+  }
+
+  .thumbnailImage {
+    width: 40px;
+    height: 40px;
+  }
+}
+@media (max-width: 991px) {
+  .productInfoContainer {
+    flex-direction: column;
+  }
+
+  .productImageSection,
+  .productDetails {
+    width: 100%;
+  }
+
+  .productMetaInfo {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    gap: 20px;
+  }
+
+  .priceInfo {
+    margin-right: 0; /* Remove large margin */
+    text-align: center;
+  }
+
+  .quantityInfo {
+    align-items: center;
+  }
+
+  .quantityControls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .quantityInput {
+    width: 60px;
+    height: 35px;
+  }
+}

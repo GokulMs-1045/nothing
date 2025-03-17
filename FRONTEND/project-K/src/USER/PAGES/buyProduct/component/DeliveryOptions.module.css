@@ -1,0 +1,285 @@
+/* 📌 Main Container */
+.deliveryOptionsContainer {
+  display: flex; /* Enables a flexible layout */
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 30px;
+  margin-top: 30px;
+  width: 96%;
+  justify-content: space-between; /* Spaces sections evenly */
+  align-items: center; /* Aligns items properly */
+}
+
+/* 📌 Sections */
+.deliveryDateSection,
+.deliveryTimeSection,
+.deliveryTypeSection {
+  width: 32%; /* Ensures equal width */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+}
+
+/* 📌 Section Titles */
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* 📌 Month & Date Selection */
+.monthDateContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+}
+
+.monthDropdown {
+  height: 50px;
+  width: 80px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 6px;
+  text-align: center;
+}
+
+/* 📌 Date Selector */
+.dateSelector {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 5px;
+  border: 1px solid #000;
+  width: 300px;
+  height: 50px;
+  justify-content: space-between;
+  overflow: hidden; /* Prevents overflow */
+}
+
+.dateList {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.dateItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px; /* Reduced for better fit */
+  cursor: pointer;
+  min-width: 10px;
+}
+
+.activeDate {
+  background-color: black;
+  color: white;
+  border-radius: 6px;
+  padding: 5px 8px;
+  max-width: 100%;
+}
+
+/* 📌 Time Selector */
+.timeSelector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #000;
+  width: 300px;
+  height: 50px;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.timeList {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+.timeItem {
+  cursor: pointer;
+  padding: 5px;
+  font-size: 12px; /* Adjusted for better fit */
+}
+
+.activeTime {
+  background-color: black;
+  color: white;
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+
+/* 📌 Delivery Type */
+.deliveryoption {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.deliveryop1 {
+  width: 250px;
+  height: 40px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid black;
+  cursor: pointer;
+  max-width: 250px;
+  overflow: hidden;
+}
+
+/* 📌 Regular Delivery Options */
+.optionsdt {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.selectday1 {
+  width: 120px;
+  height: 35px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 📌 Arrows */
+.arrowIcon,
+.arrowIconTime {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  flex-shrink: 0; /* Prevents resizing */
+}
+
+.arrowIcon:hover,
+.arrowIconTime:hover {
+  transform: scale(1.1);
+}
+
+.arrowContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px; /* Ensures arrows stay inside */
+}
+
+/* 📌 Buy Button */
+.buyButton {
+  background-color: #000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 200px;
+  height: 50px;
+  margin-top: 30px;
+  align-self: center;
+}
+
+/* 📌 Responsive Adjustments */
+
+/* Tablet (max-width: 991px) */
+@media (max-width: 991px) {
+  .deliveryOptionsContainer {
+    flex-direction: column; /* Stacks sections vertically */
+    align-items: center;
+    gap: 20px;
+  }
+
+  .deliveryDateSection,
+  .deliveryTimeSection,
+  .deliveryTypeSection {
+    width: 100%;
+    text-align: center;
+  }
+
+  .timeSelector,
+  .dateSelector,
+  .deliveryop1 {
+    width: 90%;
+    min-width: 320px;
+  }
+
+  .selectday1 {
+    width: 155px;
+  }
+
+  .dateList,
+  .timeList {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .arrowIcon,
+  .arrowIconTime {
+    width: 18px;
+    height: 18px;
+  }
+
+  .monthDateContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .monthDropdown {
+    width: 150px;
+  }
+}
+
+/* Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .deliveryOptionsContainer {
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .sectionTitle {
+    font-size: 18px;
+  }
+
+  .dateSelector,
+  .timeSelector,
+  .deliveryop1 {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .selectday1 {
+    width: 155px;
+  }
+
+  .arrowIcon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .buyButton {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .dateList,
+  .timeList {
+    flex-wrap: nowrap;
+    overflow-x: auto; /* Enables horizontal scrolling */
+  }
+
+  .arrowContainer {
+    min-width: 25px;
+  }
+}

@@ -6,14 +6,17 @@ import { FaUser, FaLock, FaEnvelope, FaCheckCircle } from "react-icons/fa";
 import "./login.css";
 
 const Login = () => {
+
   const location = useLocation();
   const [isForgotPassword, setIsForgotPassword] = useState(false);
+
   const [credentials, setCredentials] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -57,22 +60,17 @@ const Login = () => {
 
   const handleSuccess = async (response) => {
     try {
-      const { credential } = response; // ✅ Get Google token
-
-      // ✅ Send token to backend for verification
+      const { credential } = response;
       const res = await axios.post(
         "http://localhost:1045/login/google/callback",
         { token: credential },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
-
-      // ✅ Store JWT from backend
+  
       localStorage.setItem("token", res.data.token);
       alert("Google Login Successful!");
-      navigate("/dashboard");
+      navigate("/personal-info");
+
     } catch (error) {
       console.error("Google login error:", error);
       alert("Google login failed. Please try again.");
@@ -172,7 +170,7 @@ const Login = () => {
             </form>
 
             <div className="or-divider">
-              <hr className="line" />
+              <hr className="line" /> 
               <span>or</span>
               <hr className="line" />
             </div>
