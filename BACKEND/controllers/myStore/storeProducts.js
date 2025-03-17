@@ -16,10 +16,10 @@ export const addProduct = async (req, res) => {
     if (!productName || !description || !price || !returnPolicy || !category|| instock === undefined) {
       return res.status(400).json({ error: 'All fields (productName, description, price, returnPolicy, instock) are required' });
     }
-
+ 
     // Trim the googleId to avoid whitespace issues
     const trimmedGoogleId = googleId.trim();
-
+ 
     // Check if the dealer exists in the StoreDetails collection
     const dealer = await StoreDetails.findOne({ googleId: trimmedGoogleId }).lean();
     if (!dealer) {

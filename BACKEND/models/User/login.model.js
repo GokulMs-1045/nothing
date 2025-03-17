@@ -13,10 +13,9 @@ const UserSchema = new mongoose.Schema(
     given_name: { type: String },
     accessToken: { type: String },
   },
-  { timestamps: true } // ✅ Addx s createdAt & updatedAt fields
+  { timestamps: true } // ✅ Adds createdAt & updatedAt fields
 );
 
-const login = UserDetails.model("Users", UserSchema,"users");
+const login = UserDetails.model("Users", UserSchema);
 
 export default login;
-
