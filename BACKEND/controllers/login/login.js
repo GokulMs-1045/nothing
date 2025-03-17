@@ -6,7 +6,7 @@ import sendLoginMail from "../../middlewares/sendMail.js";
               
 dotenv.config();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
+  
 const googleLoginController = async (req, res) => {
   try {
     const { token } = req.body;
