@@ -3,7 +3,7 @@ import { OAuth2Client } from "google-auth-library";
 import login from "../../models/User/login.model.js";
 import dotenv from "dotenv";
 import sendLoginMail from "../../middlewares/sendMail.js";
-
+              
 dotenv.config();
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
