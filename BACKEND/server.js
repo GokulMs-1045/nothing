@@ -36,6 +36,7 @@ import dealerProductRoutes from './routes/dealerProductsRoutes.js';
 import orderProductRoutes from './routes/orderProductRoutes.js';
 import userCartRoutes from './routes/userCartRoutes.js';
 import productsRoutes from './routes/productsRoutes.js'
+import bugReportRoutes from "./routes/bugReportRoutes.js";
 
 //API's
 app.use('/',myStoreRoutes);
@@ -44,6 +45,7 @@ app.use("/",dealerProductRoutes);
 app.use("/product",orderProductRoutes)
 app.use("/",userCartRoutes);
 app.use("/",productsRoutes);
+app.use("/",bugReportRoutes);
 
 
 
