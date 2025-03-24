@@ -1,11 +1,12 @@
-const express = require('express');
+import express from "express";
+import createBugReport from '../controllers/bugReport/bugReport.js';
+import createContact from '../controllers/bugReport/contactUs.js';
+import createFeedback from '../controllers/bugReport/feedback.js';
 const router = express.Router();
-const { createBugReport } = require('../controllers/bugReport/bugReport');
-const { createContact } = require('../controllers/bugReport/contactUs');
-const { createFeedback } = require('../controllers/bugReport/feedBack');
+
 
 router.post('/bug-reports', createBugReport);
 router.post('/contact/:googleId', createContact);
 router.post('/feedback', createFeedback);
 
-module.exports = router;
+export default router;

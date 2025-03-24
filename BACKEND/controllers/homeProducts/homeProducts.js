@@ -1,5 +1,5 @@
 // controllers/homeProducts/homeProducts.js
-const ProductModule = require('../../models/Dealer/product.model.js');
+import ProductModule from '../../models/Dealer/product.model.js';
 const Product = ProductModule.default; // Access the default export
 
 const getProducts = async (req, res) => {
@@ -24,4 +24,4 @@ const getProducts = async (req, res) => {
   }
 };
 
-module.exports = { getProducts };
+export default getProducts ;

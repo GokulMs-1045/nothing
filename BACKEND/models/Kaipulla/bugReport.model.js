@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { Kaipulla } = require('../../config/db');
+import mongoose from 'mongoose';
+import { Kaipulla } from '../../config/db.js';
 
 const bugReportSchema = new mongoose.Schema({
   bugPage: {
@@ -29,4 +29,4 @@ const bugReportSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-module.exports = Kaipulla.model('bugs', bugReportSchema, 'Bugs');
+export default Kaipulla.model('bugs', bugReportSchema, 'Bugs');

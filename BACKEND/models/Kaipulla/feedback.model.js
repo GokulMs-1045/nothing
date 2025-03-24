@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { Kaipulla} = require('../../config/db.js');
+import  mongoose  from 'mongoose';
+import { Kaipulla } from '../../config/db.js';
 
 const feedbackSchema = new mongoose.Schema({
   feedbackText: {
@@ -13,4 +13,4 @@ const feedbackSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-module.exports = Kaipulla.model('feedBack', feedbackSchema);
+export default Kaipulla.model('feedBack', feedbackSchema);

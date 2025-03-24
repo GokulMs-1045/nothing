@@ -1,5 +1,4 @@
-const Contact = require('../../models/Kaipulla/contactUs.model.js');
-
+import Contact from '../../models/Kaipulla/contactUs.model.js';
 // Create a new contact request
 const createContact = async (req, res) => {
   try {
@@ -27,4 +26,4 @@ const createContact = async (req, res) => {
   }
 };
 
-module.exports = { createContact };
+export default createContact;

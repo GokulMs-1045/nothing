@@ -20,4 +20,4 @@ const Customer = createConnection("Customer");
 const Dealer = createConnection("Dealer");
 const Kaipulla = createConnection("Kaipulla");
 
-export { UserDetails, Customer, Dealer, Kaipulla };
+export  { UserDetails, Customer, Dealer, Kaipulla };

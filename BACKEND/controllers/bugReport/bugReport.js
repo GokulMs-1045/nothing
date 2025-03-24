@@ -1,12 +1,10 @@
-const bugs = require('../../models/Kaipulla/bugReport.model');
+import bugs from '../../models/Kaipulla/bugReport.model.js';
 
 // Create a new bug report
 const createBugReport = async (req, res) => {
   try {
     const { bugPage, priority, labelName, imageUrl } = req.body;
-    // Adjust based on your auth system
-
-    // Validate required fields
+    
     if (!bugPage || !priority || !labelName) {
       return res.status(400).json({ message: 'bugPage, priority, and labelName are required' });
     }
@@ -30,4 +28,4 @@ const createBugReport = async (req, res) => {
   }
 };
 
-module.exports = { createBugReport };
+export default createBugReport;

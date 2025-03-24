@@ -1,4 +1,4 @@
-const Feedback = require('../../models/Kaipulla/feedback.model');
+import Feedback from "../../models/Kaipulla/feedback.model.js"
 
 // Create a new feedback submission
 const createFeedback = async (req, res) => {
@@ -25,4 +25,4 @@ const createFeedback = async (req, res) => {
   }
 };
 
-module.exports = { createFeedback };
+export default createFeedback;

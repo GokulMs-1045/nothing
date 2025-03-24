@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { Kaipulla } = require('../../config/db.js');
+import mongoose from 'mongoose';
+import { Kaipulla } from '../../config/db.js';
 
 const contactSchema = new mongoose.Schema({
   actionType: {
@@ -17,4 +17,4 @@ const contactSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-module.exports = Kaipulla.model('Contact', contactSchema, 'Contacts');
+export default Kaipulla.model('Contact', contactSchema, 'Contacts');
