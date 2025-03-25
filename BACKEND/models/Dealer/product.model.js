@@ -1,3 +1,4 @@
+// models/Dealer/product.model.js
 import mongoose from 'mongoose';
 import { Dealer } from '../../config/db.js';
 
@@ -13,9 +14,10 @@ const productSchema = new mongoose.Schema({
     default: 'Miscellaneous'
   },
   googleId: { type: String, required: true }, // Reference to the dealer's googleId
-  instock: { type: Number, required: true }, // Optional field
+  instock: { type: Number, required: true },
 });
 
-const Product = Dealer.model('Products', productSchema,'products');
+// Register the model with the Dealer connection
+const Product = Dealer.model('Products', productSchema); // No need for the third argument 'products' unless specifying a custom collection name
 
 export default Product;

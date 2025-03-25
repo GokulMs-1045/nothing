@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Customer } from '../../config/db.js';
 
+// Shipping schema
 const shippingSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phoneNumber: { type: String, required: true },
@@ -12,6 +13,7 @@ const shippingSchema = new mongoose.Schema({
   address: { type: String, required: true },
 });
 
+// Regular delivery schema
 const regularDeliverySchema = new mongoose.Schema({
   frequency: {
     type: String,
@@ -19,50 +21,45 @@ const regularDeliverySchema = new mongoose.Schema({
     required: true,
   },
   days: {
-    type: [String], // For Weekly: e.g., ['Sunday', 'Monday']
+    type: [String],
     default: [],
   },
   dates: {
-    type: [Number], // For Monthly: e.g., [1, 15] (dates of the month)
+    type: [Number],
     default: [],
   },
 });
 
-const orderSchema = new mongoose.Schema({
-  googleId: {
+// Product schema (minimal version for reference)
+const productSchema = new mongoose.Schema({
+  productName: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  returnPolicy: { type: String, required: true },
+  category: {
     type: String,
-    required: true, // Fetched from the authenticated user
+    required: true,
+    enum: ['Electronics', 'Clothing', 'Groceries', 'Books', 'Furniture'],
+    default: 'Miscellaneous',
   },
+  googleId: { type: String, required: true },
+  instock: { type: Number, required: true },
+});
+
+// Order schema
+const orderSchema = new mongoose.Schema({
+  googleId: { type: String, required: true },
   productName: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Products',
     required: true,
   },
-  productDescription: {
-    type: String,
-    required: true,
-  },
-  returnPolicy: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-    min: 1,
-  },
-  deliveryDate: {
-    type: Date,
-    required: true,
-  },
-  deliveryTime: {
-    type: String, // e.g., "1 AM", "2 PM"
-    required: true,
-  },
+  productDescription: { type: String, required: true },
+  returnPolicy: { type: String, required: true },
+  price: { type: Number, required: true },
+  quantity: { type: Number, required: true, min: 1 },
+  deliveryDate: { type: Date, required: true },
+  deliveryTime: { type: String, required: true },
   deliveryType: {
     type: String,
     enum: ['One Time Delivery', 'Regular Delivery'],
@@ -74,26 +71,23 @@ const orderSchema = new mongoose.Schema({
       return this.deliveryType === 'Regular Delivery';
     },
   },
-  deliveryMode: {
-    type: String,
-    required: true,
-  },
+  deliveryMode: { type: String, required: true },
   paymentMode: {
     type: String,
     enum: ['Cash on Delivery', 'Online Payment'],
     required: true,
   },
   paymentFile: {
-    type: String, // Path to the uploaded file for online payment
+    type: String,
     required: function () {
       return this.paymentMode === 'Online Payment';
     },
   },
-  shippingDetails: {
-    type: shippingSchema,
-    required: true,
-  },
+  shippingDetails: { type: shippingSchema, required: true },
 }, { timestamps: true });
 
+// Register both models with the Customer connection
+Customer.model('Products', productSchema);
 const Order = Customer.model('Orders', orderSchema);
+
 export default Order;
