@@ -2,15 +2,13 @@ import Product from '../../models/Dealer/product.model.js';
 import Dealer from '../../models/Dealer/dealerStore.model.js';
 import Order from '../../models/Customer/order.model.js';
 
+
 export const createOrderbyId = async (req, res) => {
   try {
     console.log('Received Order Request:', req.body);
     console.log('Route Parameters:', req.params);
 
-    // Extract googleId and productName from route parameters
     const { googleId, productName } = req.params;
-
-    // Extract order details from the request body
     const {
       quantity,
       deliveryDate,
@@ -22,7 +20,7 @@ export const createOrderbyId = async (req, res) => {
       shippingDetails,
     } = req.body;
 
-    // Manual validation
+    // Manual validation (unchanged)
     if (!productName) return res.status(400).json({ message: 'Product name is required' });
     if (!quantity || !Number.isInteger(quantity) || quantity < 1) return res.status(400).json({ message: 'Quantity must be a positive integer' });
     if (!deliveryDate || isNaN(Date.parse(deliveryDate))) return res.status(400).json({ message: 'Delivery date must be a valid date' });
@@ -36,7 +34,7 @@ export const createOrderbyId = async (req, res) => {
       return res.status(400).json({ message: 'Invalid or missing shipping details' });
     }
 
-    // Fetch product details by product name from Dealer database
+    // Fetch product details
     console.log('Searching for product with name:', productName);
     const product = await Product.findOne({ productName: new RegExp(`^${productName}$`, 'i') });
     if (!product) {
@@ -45,7 +43,7 @@ export const createOrderbyId = async (req, res) => {
     }
     console.log('Product Found:', product);
 
-    // Fetch dealer details by googleId from UserDetails database
+    // Fetch dealer details
     console.log('Fetching dealer with googleId:', product.googleId);
     const dealer = await Dealer.findOne({ googleId: product.googleId });
     if (!dealer) {
@@ -54,24 +52,19 @@ export const createOrderbyId = async (req, res) => {
     }
     console.log('Dealer Found:', dealer);
 
-    // Verify that the googleId from the route matches the authenticated user
-    //if (!req.user || !req.user.googleId || req.user.googleId !== googleId) {
-    //  return res.status(401).json({ message: 'Unauthorized: googleId does not match authenticated user' });
-    //}
-
     // Handle file upload for online payment
     let paymentFile = null;
     if (paymentMode === 'Online Payment') {
       if (!req.file) {
         return res.status(400).json({ message: 'Payment file is required for online payment' });
       }
-      paymentFile = req.file.path; // Assuming multer is set up
+      paymentFile = req.file.path;
     }
 
-    // Prepare order data
+    // Prepare order data with product name as string
     const orderData = {
-      googleId, // Use the googleId from the route
-      productName: product._id, // Use product ID instead of name
+      googleId,
+      productName: product.productName, // Store the actual string name
       productDescription: product.description,
       returnPolicy: product.returnPolicy,
       price: product.price,
@@ -93,9 +86,79 @@ export const createOrderbyId = async (req, res) => {
     await newOrder.save();
     console.log('Order Created Successfully:', newOrder);
 
-    return res.status(201).json({ message: 'Order created successfully', order: newOrder });
+    return res.status(201).json({ 
+      message: 'Order created successfully', 
+      order: newOrder 
+    });
   } catch (error) {
     console.error('Order creation error:', error);
+    return res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+
+export const getOrdersById = async (req, res) => {
+  try {
+    const { googleId, productName } = req.params;
+
+    if (!googleId) {
+      return res.status(400).json({ message: 'googleId is required' });
+    }
+
+    const query = { googleId };
+
+    if (productName) {
+      const product = await Product.findOne({ productName: new RegExp(`^${productName}$`, 'i') });
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+      query.productName = product._id;
+    }
+
+    const orders = await Order.find(query).sort({ createdAt: -1 });
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found' });
+    }
+
+    // Manually fetch product details
+    const populatedOrders = await Promise.all(
+      orders.map(async (order) => {
+        const product = await Product.findById(order.productName);
+        return {
+          ...order.toObject(),
+          productDetails: product ? {
+            productName: product.productName,
+            description: product.description,
+            price: product.price,
+            returnPolicy: product.returnPolicy,
+          } : null,
+        };
+      })
+    );
+
+    return res.status(200).json({ message: 'Orders fetched successfully', orders: populatedOrders });
+  } catch (error) {
+    console.error('Fetch orders error:', error);
+    return res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+
+export const getAllOrders = async (req, res) => {
+  try {
+    // Fetch all orders and populate product details
+    const orders = await Order.find({})
+      .populate('productName', 'productName description price returnPolicy') // Populate product details
+      .sort({ createdAt: -1 }); // Sort by creation date (newest first)
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found in the database' });
+    }
+
+    console.log('All Orders Found:', orders);
+    return res.status(200).json({ message: 'All orders fetched successfully', orders });
+  } catch (error) {
+    console.error('Fetch all orders error:', error);
     return res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

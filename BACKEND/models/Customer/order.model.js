@@ -49,11 +49,7 @@ const productSchema = new mongoose.Schema({
 // Order schema
 const orderSchema = new mongoose.Schema({
   googleId: { type: String, required: true },
-  productName: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Products',
-    required: true,
-  },
+  productName: { type: String, required: true }, // Now a String
   productDescription: { type: String, required: true },
   returnPolicy: { type: String, required: true },
   price: { type: Number, required: true },
