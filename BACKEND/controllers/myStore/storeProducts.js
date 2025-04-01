@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-import { Dealer } from '../../config/db.js'; // Assuming this is your database connection
+
 import StoreDetails from '../../models/Dealer/dealerStore.model.js'; // Import the StoreDetails model
 import Product from '../../models/Dealer/product.model.js'; // Import the Product model
 
@@ -7,13 +6,13 @@ import Product from '../../models/Dealer/product.model.js'; // Import the Produc
 export const addProduct = async (req, res) => {
   try {
     const { googleId } = req.params; // Get googleId from the route parameters
-    const { productName, description, price, returnPolicy, instock, category} = req.body; // Get product details from the request body
+    const { productImage,productName, description, price, returnPolicy, instock, category} = req.body; // Get product details from the request body
 
     // Validate required fields
     if (!googleId) {
       return res.status(400).json({ error: 'Google ID is required in the route' });
     } 
-    if (!productName || !description || !price || !returnPolicy || !category|| instock === undefined) {
+    if (!productName || !description || !productImage  || !price || !returnPolicy || !category|| instock  === undefined) {
       return res.status(400).json({ error: 'All fields (productName, description, price, returnPolicy, instock) are required' });
     }
  
@@ -29,6 +28,7 @@ export const addProduct = async (req, res) => {
     // Create a new product object
     const newProduct = {
       productName,
+      productImage,
       description,
       price,
       returnPolicy,
@@ -102,7 +102,7 @@ export const getProductsByGoogleId = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { googleId, productName } = req.params; // Get googleId and productName from route
-    const { description, price, returnPolicy, instock,category } = req.body; // Updated fields
+    const { productImage ,description, price, returnPolicy, instock,category } = req.body; // Updated fields
 
     // Validate required fields
     if (!googleId || !productName) {
@@ -122,7 +122,7 @@ export const updateProduct = async (req, res) => {
     // Find and update the product in the Products collection
     const updatedProduct = await Product.findOneAndUpdate(
       { googleId: trimmedGoogleId, productName: trimmedProductName }, // Find by googleId & productName
-      { description, price, returnPolicy, instock ,category}, // Fields to update
+      { productImage,description, price, returnPolicy, instock ,category}, // Fields to update
       { new: true } // Return updated document
     );
 

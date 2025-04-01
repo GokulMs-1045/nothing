@@ -1,4 +1,3 @@
-// models/Customer/Cart.model.js
 import mongoose from 'mongoose';// Adjust path to your db.js
 import { Customer} from '../../config/db.js';
 
@@ -15,6 +14,11 @@ const cartSchema = new mongoose.Schema({
     type: String,
     required: true, // Fetched from Product model
   },
+  productImage: {
+    type: String,
+    required: true, // Fetched from Product model
+  },
+
   price: {
     type: Number,
     required: true,

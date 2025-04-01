@@ -6,7 +6,7 @@ import { deleteCart} from '../controllers/userCart/userCart.js';
 const router = express.Router();
 
 router.post('/:googleId/:productName/cart', addToCart);
-router.get('/:googleId/:productName/cart',getCart);
+router.get('/:googleId/cart',getCart);
 router.delete('/:googleId/:productName/cart/delete',deleteCart);
 
 export default router;

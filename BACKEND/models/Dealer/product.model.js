@@ -4,6 +4,7 @@ import { Dealer } from '../../config/db.js';
 
 const productSchema = new mongoose.Schema({
   productName: { type: String, required: true },
+  productImage:{type:String,required:true},
   description: { type: String, required: true },
   price: { type: Number, required: true },
   returnPolicy: { type: String, required: true },
@@ -14,7 +15,7 @@ const productSchema = new mongoose.Schema({
     default: 'Miscellaneous'
   },
   googleId: { type: String, required: true }, // Reference to the dealer's googleId
-  instock: { type: Number, required: true },
+  instock: { type: Number, required: true }
 });
 
 // Register the model with the Dealer connection

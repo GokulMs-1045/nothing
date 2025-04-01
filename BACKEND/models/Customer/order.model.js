@@ -33,9 +33,9 @@ const regularDeliverySchema = new mongoose.Schema({
 // Product schema (minimal version for reference)
 const productSchema = new mongoose.Schema({
   productName: { type: String, required: true },
+  productImage:{type:String,required:true},
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  returnPolicy: { type: String, required: true },
   category: {
     type: String,
     required: true,
@@ -50,6 +50,7 @@ const productSchema = new mongoose.Schema({
 const orderSchema = new mongoose.Schema({
   googleId: { type: String, required: true },
   productName: { type: String, required: true }, // Now a String
+  productImage:{type:String,required:true},
   productDescription: { type: String, required: true },
   returnPolicy: { type: String, required: true },
   price: { type: Number, required: true },
@@ -83,7 +84,7 @@ const orderSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Register both models with the Customer connection
-Customer.model('Products', productSchema);
+Customer.model('Products', productSchema);  
 const Order = Customer.model('Orders', orderSchema);
 
 export default Order;

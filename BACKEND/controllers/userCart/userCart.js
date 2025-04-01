@@ -66,6 +66,7 @@ const addToCart = async (req, res) => {
     const cartData = {
       googleId,
       productName,
+      productImage:product.productImage,
       productDescription: product.description,
       price: product.price,
       quantity,
@@ -79,6 +80,7 @@ const addToCart = async (req, res) => {
       const orderData = {
         googleId,
         productName,
+        productImage:product.productImage,
         productDescription: product.description,
         price: product.price,
         quantity,

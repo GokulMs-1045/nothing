@@ -16,7 +16,6 @@ const getProducts = async (req, res) => {
     if (!products || products.length === 0) {
       return res.status(200).json({ message: 'No products found', products: [] });
     }
-
     return res.status(200).json({ message: 'Products retrieved successfully', products });
   } catch (error) {
     console.error('Get products error:', error);
